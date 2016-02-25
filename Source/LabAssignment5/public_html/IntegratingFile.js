@@ -18,21 +18,33 @@ var SentimentApp = angular.module("MashApp",[]);
                                     SentimentText = data.query.pages[i].extract;
                                     console.log(SentimentText);
                                 }
-                                $scope.sentiment1 = SentimentText;
-                                var callback = $http.get("http://gateway-a.watsonplatform.net/calls/text/TextGetTextSentiment" +
+                                $scope.sentiment1 = SentimentText;                   
+                            }
+                        })
+                        $scope.HideAuthorMoodButton = {'visibility': 'visible'};
+                        document.getElementById('Senti').style.visibility = 'visible';
+        }
+        
+        
+        $scope.getSentiment = function (sentiText) {
+		
+                console.log("Inside Sentiment Method");
+        //This is the Alchemy API for getting the sentiment of the most recent review for a place.
+        var callback = $http.get("http://gateway-a.watsonplatform.net/calls/text/TextGetTextSentiment" +
                                         "?apikey=5f3b5ccd34a8fbb9203b943ce4f5f8728ae124cd" +
-                                        "&outputMode=json&text=" + SentimentText);
-                                callback.success(function (data) {
+                                        "&outputMode=json&text=" + sentiText);
+                        callback.success(function (data) {
+                            if(data!=null)
+                            {
                                 if(data!=null && data.docSentiment!=null)
                                 {
                                     var mood = data.docSentiment.type;
                                     $scope.sentiment = "The autor is in " + data.docSentiment.type + " mood";
+                                   
                                 }
-                                })
                             }
                         })
         }
-        
 
     });
 /* 
